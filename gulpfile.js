@@ -14,12 +14,15 @@ var sassFiles = "./app/sass/*.scss",
   htmlFiles = "./dist/*.html",
   jsFiles = "./dist/assets/js";
 
-function test() {
-    return gulp.src("./dist/*", { read: false }).pipe(clean());
+function cleanFiles(loc) {
+    return gulp.src(loc, { read: false })
+        .pipe(clean());
 }
 
 gulp.task("js", () => {
-  return gulp
+  cleanFiles(jsFiles + '/*');
+  return ( 
+    gulp
     .src("./app/main.js")
     .pipe(hash()) // Add hashes to the files' names
     .pipe(gulp.dest(jsFiles)) // Write the renamed files
@@ -30,12 +33,13 @@ gulp.task("js", () => {
       })
     )
     // writes the manifest file
-    .pipe(gulp.dest("."));
+    .pipe(gulp.dest("."))
+  );
 });
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task("sass", () => {
-  //   test();
+  cleanFiles(cssDest + '/*');
   return (
     gulp
       .src(sassFiles)
@@ -69,10 +73,12 @@ gulp.task("serve", () => {
       baseDir: "./app/"
     }
   });
+  // watch functions
   gulp.watch(sassFiles, gulp.series("sass"));
+  gulp.watch('./app/main.js', gulp.series("js"));
   gulp.watch(htmlFiles).on("change", browserSync.reload);
 });
 
 gulp.task(
   "default",
-  gulp.series(gulp.parallel("sass", "js", "serve"), test));
+  gulp.series(gulp.parallel("sass", "js"), "serve"), () => {});
