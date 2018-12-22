@@ -12,6 +12,7 @@ const autoprefixer = require("gulp-autoprefixer");
 const sourcemaps = require("gulp-sourcemaps");
 const uglify = require('gulp-uglify');
 const pump = require('pump');
+const cleanCSS = require('gulp-clean-css');
 
 //style paths
 var sassDir = "./app/sass/*.scss",
@@ -58,6 +59,7 @@ gulp.task("build-sass", () => {
       .pipe(sass())
       .pipe(concat("style.min.css"))
       .pipe(sourcemaps.write())
+      .pipe(cleanCSS({compatibility: 'ie8'}))
       .pipe(gulp.dest(cssDest))
       .pipe(browserSync.stream())
   );
