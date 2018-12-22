@@ -1,5 +1,5 @@
 {
-  "name": "gulp-sass",
+  "name": "gulp-sass-boilerplate",
   "version": "1.0.0",
   "main": "gulpfile.js",
   "dependencies": {
