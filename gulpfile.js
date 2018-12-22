@@ -8,32 +8,42 @@ const revRewrite = require("gulp-rev-rewrite");
 
 //style paths
 var sassFiles = "./app/sass/*.scss",
-    jsFileSrc = "./app/main.js",
-    htmlFiles = "./app/*.html",
-    cssDest = "./dist/assets/css/",
-    jsDest = "./dist/assets/js";
+  jsFileSrc = "./app/main.js",
+  htmlFiles = "./app/*.html",
+  cssDest = "./build/assets/css",
+  jsDest = "./build/assets/js",
+  assets = "./build/assets";
 
-function hash_reference() {
-
-  gulp
-    .src([cssDest + "/*.css", jsDest + "/*.js"], { base: "assets" })
-    // hashing
-    .pipe(rev())
-    .pipe(gulp.dest("assets")) // write rev'd assets to build dir
-    .pipe(rev.manifest())
-    .pipe(gulp.dest("./dist")); // write manifest to build dir
-
-  var manifester = () => {
-    const manifest = gulp.src("./dist/rev-manifest.json");
+// function hash_reference() {
+gulp.task(
+  "rev",
+  gulp.series(function(done) {
     gulp
-      .src("./dist/*.html")
+      .src([cssDest + "/*.css", jsDest + "/*.js"], { base: "./build/assets" })
+      // hashing
+      .pipe(rev())
+      .pipe(gulp.dest(assets)) // write rev'd assets to build dir
+      .pipe(rev.manifest())
+      .pipe(gulp.dest("./build")); // write manifest to build dir
+
+    //   manifester();
+    // cleanFiles('./build/assets')
+    done();
+  })
+);
+
+gulp.task(
+  "rev-rewrite", gulp.series(function(done) {
+    const manifest = gulp.src("./build/rev-manifest.json");
+    gulp
+      .src("./build/*.html")
       // replacing links
       .pipe(revRewrite({ manifest }))
-      .pipe(gulp.dest("./dist"));
-  };
-  manifester();
-   // cleanFiles('./dist/assets')
-}
+      .pipe(gulp.dest("./build"));
+
+    done();
+  })
+);
 
 // deleting compiled files
 function cleanFiles(loc) {
@@ -42,7 +52,6 @@ function cleanFiles(loc) {
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task("sass", () => {
-
   // cleaning build files
   cleanFiles(cssDest + "/*");
 
@@ -50,7 +59,7 @@ gulp.task("sass", () => {
     gulp
       .src(sassFiles)
       .pipe(sass())
-      .pipe(concat("style.css"))
+      .pipe(concat("style.min.css"))
 
       //   .pipe(rev())
       .pipe(gulp.dest(cssDest))
@@ -60,10 +69,9 @@ gulp.task("sass", () => {
 });
 
 gulp.task("js", () => {
-
   // clean js build files
   cleanFiles(jsDest + "/*");
-  
+
   return (
     gulp
       .src(jsFileSrc)
@@ -73,16 +81,23 @@ gulp.task("js", () => {
   );
 });
 
+
+gulp.task("html", gulp.series(function(done) {
+      // copy html files to build dir
+    gulp.src(htmlFiles)
+        .pipe(gulp.dest("./build"));
+    done();
+}));
+
 // Static Server + watching scss/html files
 gulp.task("serve", () => {
-  // copy html files to build dir
-  gulp.src(htmlFiles).pipe(gulp.dest("./dist"));
+
   // hashing
-  hash_reference();
+  //   hash_reference();
 
   browserSync.init({
     server: {
-      baseDir: "./dist/"
+      baseDir: "./build/"
     }
   });
 
@@ -93,7 +108,4 @@ gulp.task("serve", () => {
 });
 
 // default task
-gulp.task(
-  "default",
-  gulp.series(gulp.parallel("sass", "js"), "serve"), () => {}
-);
+gulp.task("default", gulp.series(gulp.parallel("sass", "js"), "serve"));
