@@ -6,6 +6,8 @@ const rev = require("gulp-rev");
 const revRewrite = require("gulp-rev-rewrite");
 const babel = require("gulp-babel");
 const del = require('del');
+const sourcemaps = require("gulp-sourcemaps");
+const autoprefixer = require("gulp-autoprefixer");
 
 //style paths
 var sassDir = "./app/sass/*.scss",
@@ -46,8 +48,11 @@ gulp.task("sass", () => {
   return (
     gulp
       .src(sassDir)
+      .pipe(sourcemaps.init())
+      .pipe(autoprefixer())
       .pipe(sass())
       .pipe(concat("style.min.css"))
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest(cssDest))
       .pipe(browserSync.stream())
   );

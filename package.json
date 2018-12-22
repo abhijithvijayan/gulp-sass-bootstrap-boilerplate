@@ -10,6 +10,7 @@
     "@babel/preset-env": "^7.2.3",
     "browser-sync": "^2.26.3",
     "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-rev": "^9.0.0",
