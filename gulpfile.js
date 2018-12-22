@@ -5,11 +5,12 @@ const concat = require("gulp-concat");
 const clean = require("gulp-clean");
 const rev = require("gulp-rev");
 const revRewrite = require("gulp-rev-rewrite");
+const babel = require('gulp-babel');
 
 //style paths
-var sassFiles = "./app/sass/*.scss",
-  jsFileSrc = "./app/main.js",
-  htmlFiles = "./app/*.html",
+var sassDir = "./app/sass/*.scss",
+  jsDir = "./app/*.js",
+  htmlDir = "./app/*.html",
   cssDest = "./build/assets/css",
   jsDest = "./build/assets/js",
   assets = "./build/assets";
@@ -57,7 +58,7 @@ gulp.task("sass", () => {
 
   return (
     gulp
-      .src(sassFiles)
+      .src(sassDir)
       .pipe(sass())
       .pipe(concat("style.min.css"))
 
@@ -74,7 +75,10 @@ gulp.task("js", () => {
 
   return (
     gulp
-      .src(jsFileSrc)
+      .src(jsDir)
+      .pipe(babel({
+        presets: ['@babel/env']
+       }))
       .pipe(concat("bundle.js"))
       // .pipe(rev())  // Add hashes to the files' names
       .pipe(gulp.dest(jsDest)) // Write the renamed files
@@ -84,7 +88,7 @@ gulp.task("js", () => {
 
 gulp.task("html", gulp.series(function(done) {
       // copy html files to build dir
-    gulp.src(htmlFiles)
+    gulp.src(htmlDir)
         .pipe(gulp.dest("./build"));
     done();
 }));
@@ -102,9 +106,9 @@ gulp.task("serve", () => {
   });
 
   // watch functions
-  gulp.watch(sassFiles, gulp.series("sass"));
+  gulp.watch(sassDir, gulp.series("sass"));
   gulp.watch("./app/main.js", gulp.series("js"));
-  gulp.watch(htmlFiles).on("change", browserSync.reload);
+  gulp.watch(htmlDir).on("change", browserSync.reload);
 });
 
 // default task
