@@ -94,7 +94,7 @@ gulp.task(
 );
 
 // build task
-gulp.task("build", gulp.parallel("build-html", "build-sass", "compress-js"));
+gulp.task("build-all", gulp.parallel("build-html", "build-sass", "compress-js"));
 
 // hashing and update links
 gulp.task("update", gulp.series("hash-inject"));
@@ -128,11 +128,14 @@ gulp.task(
 // live reloading
 gulp.task(
   "live-reload",
-  gulp.series("clean", "build", "update", function(done) {
+  gulp.series("clean", "build-all", "update", function(done) {
     browserSync.reload();
     done();
   })
 );
 
 // default task
-gulp.task("default", gulp.series("clean", "build", "update", "serve"));
+gulp.task("default", gulp.series("clean", "build-all", "update", "serve"));
+
+// build for production
+gulp.task("build", gulp.series("clean", "build-all", "update"));
