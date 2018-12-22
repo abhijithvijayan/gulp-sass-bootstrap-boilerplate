@@ -2,10 +2,10 @@ const gulp = require("gulp");
 const sass = require("gulp-sass");
 const browserSync = require("browser-sync").create();
 const concat = require("gulp-concat");
-const clean = require("gulp-clean");
 const rev = require("gulp-rev");
 const revRewrite = require("gulp-rev-rewrite");
 const babel = require("gulp-babel");
+const del = require('del');
 
 //style paths
 var sassDir = "./app/sass/*.scss",
@@ -25,7 +25,6 @@ gulp.task("rev", function() {
       .pipe(rev.manifest())
       .pipe(gulp.dest("./build")) // write manifest to build dir
   );
-  // cleanFiles('./build/assets')
 });
 
 gulp.task(
@@ -42,16 +41,8 @@ gulp.task(
   })
 );
 
-// deleting compiled files
-function cleanFiles(loc) {
-  return gulp.src(loc, { read: false }).pipe(clean());
-}
-
 // Compile sass into CSS & auto-inject into browsers
 gulp.task("sass", () => {
-  // cleaning build files
-  cleanFiles(cssDest + "/*");
-
   return (
     gulp
       .src(sassDir)
@@ -64,8 +55,6 @@ gulp.task("sass", () => {
 
 // babel build task
 gulp.task("js", () => {
-  // clean js build files
-  cleanFiles(jsDest + "/*");
 
   return gulp
     .src(jsDir)
@@ -87,29 +76,35 @@ gulp.task(
   })
 );
 
+// clean previous build
+gulp.task('clean', function(done) {
+   del.sync(['./build/**']);
+   done();
+});
+
+// watching js/scss/html files
+gulp.task("watch", function() {
+    // watch functions (to be corrected)
+    gulp.watch(sassDir, gulp.series("default"));
+    gulp.watch("./app/main.js", gulp.series("js"));
+    gulp.watch(htmlDir).on("change", browserSync.reload);
+});
+
 // Static Server
-gulp.task("serve", () => {
+gulp.task("serve", gulp.parallel("watch", () => {
   browserSync.init({
     server: {
       baseDir: "./build/"
     }
   });
-});
+}));
 
-// watching js/scss/html files
-gulp.task("watch", function() {
-  // watch functions (to be corrected)
-  gulp.watch(sassDir, gulp.series("sass"));
-  gulp.watch("./app/main.js", gulp.series("js"));
-  gulp.watch(htmlDir).on("change", browserSync.reload);
-});
+gulp.task("build", gulp.parallel("html", "sass", "js"));
+
+gulp.task("update", gulp.series("rev-rewrite"));
 
 // default task
 gulp.task(
   "default",
-  gulp.series(
-    gulp.parallel("html", "sass", "js"),
-    gulp.series("rev-rewrite"),
-    "serve"
-  )
+  gulp.series("clean", "build", "update", "serve")
 );
