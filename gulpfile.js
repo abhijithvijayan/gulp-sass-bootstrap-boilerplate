@@ -10,6 +10,8 @@ const babel = require("gulp-babel");
 const del = require('del');
 const autoprefixer = require("gulp-autoprefixer");
 const sourcemaps = require("gulp-sourcemaps");
+const uglify = require('gulp-uglify');
+const pump = require('pump');
 
 //style paths
 var sassDir = "./app/sass/*.scss",
@@ -31,6 +33,7 @@ gulp.task("rev", function() {
   );
 });
 
+// inject hashed files to html
 gulp.task(
   "rev-rewrite",
   gulp.series("rev", function(done) {
@@ -45,8 +48,8 @@ gulp.task(
   })
 );
 
-// Compile sass into CSS & auto-inject into browsers
-gulp.task("sass", () => {
+// Compile sass into CSS
+gulp.task("build-sass", () => {
   return (
     gulp
       .src(sassDir)
@@ -61,7 +64,7 @@ gulp.task("sass", () => {
 });
 
 // babel build task
-gulp.task("js", () => {
+gulp.task("build-js", () => {
 
   return gulp
     .src(jsDir)
@@ -71,11 +74,23 @@ gulp.task("js", () => {
       })
     )
     .pipe(concat("bundle.js"))
-    .pipe(gulp.dest(jsDest)); // Write the renamed files
+    .pipe(gulp.dest(jsDest)); // Write the renamed file
 });
 
+// uglifyJS
+gulp.task('compress-js', gulp.series("build-js", function (cb) {
+    pump([
+            gulp.src(jsDest + "/*.js"),
+            uglify(),
+            gulp.dest(jsDest)
+        ],
+        cb
+    );
+}));
+
+// html files build
 gulp.task(
-  "html",
+  "build-html",
   gulp.series(function(done) {
     // copy html files to build dir
     gulp.src(htmlDir).pipe(gulp.dest("./build"));
@@ -84,7 +99,8 @@ gulp.task(
 );
 
 // build task
-gulp.task("build", gulp.parallel("html", "sass", "js"));
+gulp.task("build", gulp.parallel("build-html", "build-sass", "compress-js"));
+// hashing and update links
 gulp.task("update", gulp.series("rev-rewrite"));
 
 // clean previous build
@@ -93,7 +109,7 @@ gulp.task('clean', function(done) {
    done();
 });
 
-// watching js/scss/html files
+// watching scss/js/html files
 gulp.task("watch", function() {
     // watch functions (to be corrected)
     gulp.watch(sassDir, gulp.series("live-reload"));
@@ -110,6 +126,7 @@ gulp.task("serve", gulp.parallel("watch", () => {
   });
 }));
 
+// live reloading
 gulp.task('live-reload', gulp.series("clean", "build", "update", function (done) {
     browserSync.reload();
     done();

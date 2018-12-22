@@ -1,3 +1,3 @@
 # gulp-sass-boilerplate
 
-in the Alpha Version :)
+in the Beta Version :)
