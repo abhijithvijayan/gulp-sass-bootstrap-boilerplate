@@ -1,3 +1,5 @@
+'use strict';
+
 const gulp = require("gulp");
 const sass = require("gulp-sass");
 const browserSync = require("browser-sync").create();
@@ -6,8 +8,8 @@ const rev = require("gulp-rev");
 const revRewrite = require("gulp-rev-rewrite");
 const babel = require("gulp-babel");
 const del = require('del');
-const sourcemaps = require("gulp-sourcemaps");
 const autoprefixer = require("gulp-autoprefixer");
+const sourcemaps = require("gulp-sourcemaps");
 
 //style paths
 var sassDir = "./app/sass/*.scss",
@@ -33,7 +35,7 @@ gulp.task(
   "rev-rewrite",
   gulp.series("rev", function(done) {
     const manifest = gulp.src("./build/rev-manifest.json");
-    gulp
+    return gulp
       .src("./build/*.html")
       // replacing links
       .pipe(revRewrite({ manifest }))
@@ -81,6 +83,10 @@ gulp.task(
   })
 );
 
+// build task
+gulp.task("build", gulp.parallel("html", "sass", "js"));
+gulp.task("update", gulp.series("rev-rewrite"));
+
 // clean previous build
 gulp.task('clean', function(done) {
    del.sync(['./build/**']);
@@ -90,7 +96,7 @@ gulp.task('clean', function(done) {
 // watching js/scss/html files
 gulp.task("watch", function() {
     // watch functions (to be corrected)
-    gulp.watch(sassDir, gulp.series("default"));
+    gulp.watch(sassDir, gulp.series("sass-watch"));
     gulp.watch("./app/main.js", gulp.series("js"));
     gulp.watch(htmlDir).on("change", browserSync.reload);
 });
@@ -104,9 +110,10 @@ gulp.task("serve", gulp.parallel("watch", () => {
   });
 }));
 
-gulp.task("build", gulp.parallel("html", "sass", "js"));
-
-gulp.task("update", gulp.series("rev-rewrite"));
+gulp.task('sass-watch', gulp.series("clean", "build", "update", function (done) {
+    browserSync.reload();
+    done();
+}));
 
 // default task
 gulp.task(
