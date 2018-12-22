@@ -96,9 +96,9 @@ gulp.task('clean', function(done) {
 // watching js/scss/html files
 gulp.task("watch", function() {
     // watch functions (to be corrected)
-    gulp.watch(sassDir, gulp.series("sass-watch"));
-    gulp.watch("./app/main.js", gulp.series("js"));
-    gulp.watch(htmlDir).on("change", browserSync.reload);
+    gulp.watch(sassDir, gulp.series("live-reload"));
+    gulp.watch("./app/*.js", gulp.series("live-reload"));
+    gulp.watch(htmlDir).on("change", gulp.series("live-reload"));
 });
 
 // Static Server
@@ -110,7 +110,7 @@ gulp.task("serve", gulp.parallel("watch", () => {
   });
 }));
 
-gulp.task('sass-watch', gulp.series("clean", "build", "update", function (done) {
+gulp.task('live-reload', gulp.series("clean", "build", "update", function (done) {
     browserSync.reload();
     done();
 }));
