@@ -31,6 +31,7 @@ It contains the following features:
 - SASS Compiler
 - Browser-Sync Live-Reloading
 - JS & CSS Compression
+- SourceMapping
 
 ## Features
 
@@ -42,6 +43,8 @@ This project contains the following loaders & plugins:
 - Babel Loader for compiling ES7 code
 - Gulp-Uglify for compressing JS
 - Gulp-Clean-CSS for compressing CSS
+- Gulp-Sourcemaps for mapping into css file
+- Gulp-rev for filename hashing
 
 ## Getting Started
 
@@ -87,9 +90,20 @@ gulp build
 
 - Add your HTML files by inserting or including them in the `app` directory
   - (By default `index.html` is added to the directory, edit it with the changes seen live.)
+
 - Add `images` to your `app/assets` folder.
+
 - Add `sass`(SCSS) files to `app/sass` folder.
+
+## TODO list
+
+- [ ] Bootstrap inclusion
+- [ ] Jquery
+- [ ] CSS Loaders
+- [ ] Assets Loader
+- [ ] Zip Plugin
+- [ ] Code Optimising
 
 ## Licence
 
-Code released under the [MIT License](https://github.com/abhijithvijayan/gulp-sass-boilerplate/blob/master/README.md).
+Code released under the [MIT License](https://github.com/abhijithvijayan/gulp-sass-boilerplate/blob/master/LICENCE).
