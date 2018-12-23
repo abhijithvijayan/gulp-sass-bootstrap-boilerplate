@@ -1,20 +1,23 @@
-<h2 align="center">gulp-sass-boilerplate</h2>
+<h2 align="center">gulp-sass-bootstrap-boilerplate</h2>
 
 <p align="center">
   <a href="https://github.com/abhijithvijayan/gulp-sass-boilerplate/blob/master/LICENSE">
     <img alt="License" src="https://img.shields.io/github/license/abhijithvijayan/gulp-sass-boilerplate.svg"></a>
   <a href="https://www.npmjs.com/package/gulp">
     <img alt="gulp" src="https://img.shields.io/badge/gulp-v4.0.0-blue.svg"></a>
+  <a href="http://getbootstrap.com/">
+    <img alt="Bootstrap" src="https://img.shields.io/badge/Bootstrap-v4.2.1-563d7c.svg"></a>
   <a href="https://www.npmjs.com/package/gulp-sass">
     <img alt="gulp-sass" src="https://img.shields.io/badge/gulp--sass-4.0.2-ff69b4.svg"></a>
   <a href="#">
-    <img alt="livereload" src="https://img.shields.io/badge/dev-live--reloading-red.svg"></a>
+    <img alt="livereload" src="https://img.shields.io/badge/dev--server-live--reloading-red.svg"></a>
 </p>
 
 <p align="center">
   <em>
   SASS
   · Babel
+  · Bootstrap
   · Gulp
   · Live Reload
   </em>
@@ -29,6 +32,7 @@ It contains the following features:
 - Gulp Runner
 - Babel ES7 Compiler
 - SASS Compiler
+- Bootstrap v4
 - Browser-Sync Live-Reloading
 - JS & CSS Compression
 - SourceMapping
@@ -102,8 +106,9 @@ gulp build
 
 ## TODO list
 
-- [ ] Bootstrap inclusion
+- [x] Bootstrap inclusion
 - [ ] Jquery
+- [ ] PopperJS
 - [ ] CSS Loaders
 - [ ] Assets Loader
 - [ ] Zip Plugin
