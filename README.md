@@ -95,6 +95,11 @@ gulp build
 
 - Add `sass`(SCSS) files to `app/sass` folder.
 
+    - Make sure you import the scss file in `main.scss`
+      ```
+      @import "filename";
+      ```
+
 ## TODO list
 
 - [ ] Bootstrap inclusion
