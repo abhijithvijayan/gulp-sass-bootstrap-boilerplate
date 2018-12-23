@@ -18,31 +18,40 @@ const cleanCSS = require("gulp-clean-css");
 var sassDir = "./app/sass/*.scss",
   jsDir = "./app/*.js",
   htmlDir = "./app/*.html",
-  cssDest = "./build/assets/css",
-  jsDest = "./build/assets/js",
-  assets = "./build/assets";
+  // cssDest = "./build/assets/css",
+  // jsDest = "./build/assets/js",
+  assets = "./build/assets",
+  dist = "./build/dist/",
+  build = "./build";
 
 // hashing task
 gulp.task("hash", function() {
   return gulp
-    .src([cssDest + "/*.css", jsDest + "/*.js"], { base: "./build/assets" })
+    // .src([cssDest + "/*.css", jsDest + "/*.js"], { base: "./build/assets" })
+    .src([dist + "/*.js", dist + "/*.css"])
     .pipe(rev())
     .pipe(gulp.dest(assets)) // write rev'd assets to build dir
     .pipe(rev.manifest())
-    .pipe(gulp.dest("./build")); // write manifest to build dir
+    .pipe(gulp.dest(build)); // write manifest to build dir
+
 });
+
+gulp.task("clean-dist", gulp.series("hash", (done) => {
+    del([dist]);
+    done();
+}));
 
 // inject hashed files to html
 gulp.task(
   "hash-inject",
-  gulp.series("hash", function(done) {
+  gulp.series("clean-dist", function(done) {
     const manifest = gulp.src("./build/rev-manifest.json");
     return (
       gulp
         .src("./build/*.html")
         // replacing links
         .pipe(revRewrite({ manifest }))
-        .pipe(gulp.dest("./build"))
+        .pipe(gulp.dest(build))
     );
     done();
   })
@@ -58,7 +67,7 @@ gulp.task("build-sass", () => {
     .pipe(concat("style.min.css"))
     .pipe(sourcemaps.write())
     .pipe(cleanCSS({ compatibility: "ie8" }))
-    .pipe(gulp.dest(cssDest))
+    .pipe(gulp.dest(dist))
     .pipe(browserSync.stream());
 });
 
@@ -72,14 +81,14 @@ gulp.task("build-js", () => {
       })
     )
     .pipe(concat("bundle.js"))
-    .pipe(gulp.dest(jsDest)); // Write the renamed file
+    .pipe(gulp.dest(dist)); // Write the renamed file
 });
 
 // uglifyJS
 gulp.task(
   "compress-js",
   gulp.series("build-js", function(cb) {
-    pump([gulp.src(jsDest + "/*.js"), uglify(), gulp.dest(jsDest)], cb);
+    pump([gulp.src(dist + "/*.js"), uglify(), gulp.dest(dist)], cb);
   })
 );
 
