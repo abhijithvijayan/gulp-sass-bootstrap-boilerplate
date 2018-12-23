@@ -14,7 +14,7 @@ const uglify = require("gulp-uglify");
 const pump = require("pump");
 const cleanCSS = require("gulp-clean-css");
 
-//style paths
+// style paths
 var sassDir = "./app/sass/*.scss",
   jsDir = "./app/*.js",
   htmlDir = "./app/*.html",
@@ -27,20 +27,24 @@ var sassDir = "./app/sass/*.scss",
 
 // hashing task
 gulp.task("hash", function() {
-  return gulp
-    // .src([cssDest + "/*.css", jsDest + "/*.js"], { base: "./build/assets" })
-    .src([dist + "/*.js", dist + "/*.css"])
-    .pipe(rev())
-    .pipe(gulp.dest(assets)) // write rev'd assets to build dir
-    .pipe(rev.manifest())
-    .pipe(gulp.dest(build)); // write manifest to build dir
-
+  return (
+    gulp
+      .src([dist + "/*.js", dist + "/*.css"])
+      .pipe(rev())
+      .pipe(gulp.dest(assets))
+      .pipe(rev.manifest())
+      .pipe(gulp.dest(build))
+  );
 });
 
-gulp.task("clean-dist", gulp.series("hash", (done) => {
+// cleaning dist folder
+gulp.task(
+  "clean-dist",
+  gulp.series("hash", done => {
     del([dist]);
     done();
-}));
+  })
+);
 
 // inject hashed files to html
 gulp.task(
@@ -50,7 +54,6 @@ gulp.task(
     return (
       gulp
         .src("./build/*.html")
-        // replacing links
         .pipe(revRewrite({ manifest }))
         .pipe(gulp.dest(build))
     );
@@ -75,14 +78,14 @@ gulp.task("build-sass", () => {
 // babel build task
 gulp.task("build-js", () => {
   return gulp
-    .src([jquery, popperjs, bootstrap, jsDir])
+    .src([jsDir, jquery, popperjs, bootstrap])
     .pipe(
       babel({
         presets: ["@babel/env"]
       })
     )
     .pipe(concat("bundle.js"))
-    .pipe(gulp.dest(dist)); // Write the renamed file
+    .pipe(gulp.dest(dist));
 });
 
 // uglifyJS
@@ -97,14 +100,19 @@ gulp.task(
 gulp.task(
   "build-html",
   gulp.series(function(done) {
-    // copy html files to build dir
     gulp.src(htmlDir).pipe(gulp.dest("./build"));
     done();
   })
 );
 
-// build task
-gulp.task("build-all", gulp.parallel("build-html", "build-sass", "compress-js"));
+// build and minify
+gulp.task(
+  "build-compress",
+  gulp.parallel("build-html", "build-sass", "compress-js")
+);
+
+// build files
+gulp.task("build-all", gulp.parallel("build-html", "build-sass", "build-js"));
 
 // hashing and update links
 gulp.task("update", gulp.series("hash-inject"));
@@ -117,7 +125,6 @@ gulp.task("clean", function(done) {
 
 // watching scss/js/html files
 gulp.task("watch", function() {
-  // watch functions (to be corrected)
   gulp.watch(sassDir, gulp.series("live-reload"));
   gulp.watch("./app/*.js", gulp.series("live-reload"));
   gulp.watch(htmlDir).on("change", gulp.series("live-reload"));
@@ -144,8 +151,8 @@ gulp.task(
   })
 );
 
-// default task
-gulp.task("default", gulp.series("clean", "build-all", "update", "serve"));
+// build and serve
+gulp.task("start", gulp.series("clean", "build-all", "update", "serve"));
 
 // build for production
-gulp.task("build", gulp.series("clean", "build-all", "update"));
+gulp.task("build", gulp.series("clean", "build-compress", "update"));

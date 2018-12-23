@@ -44,7 +44,7 @@ It contains the following features:
 This project contains the following loaders & plugins:
 
 - Gulp-Sass for compiling sass (SCSS)
-- Babel Loader for compiling ES7 code
+- Babel Loader for compiling ES6 code
 - Gulp-Uglify for compressing JS
 - Gulp-Clean-CSS for compressing CSS
 - Gulp-Sourcemaps for mapping into css file
@@ -79,7 +79,7 @@ npm install
 Launch the development environment with:
 
 ```
-gulp
+gulp start
 ```
 
 then, navigate to http://localhost:3000
@@ -107,8 +107,8 @@ gulp build
 ## TODO list
 
 - [x] Bootstrap inclusion
-- [ ] Jquery
-- [ ] PopperJS
+- [x] Jquery
+- [x] PopperJS
 - [ ] CSS Loaders
 - [ ] Assets Loader
 - [ ] Zip Plugin
