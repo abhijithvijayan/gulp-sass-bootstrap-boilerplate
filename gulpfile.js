@@ -18,11 +18,12 @@ const cleanCSS = require("gulp-clean-css");
 var sassDir = "./app/sass/*.scss",
   jsDir = "./app/*.js",
   htmlDir = "./app/*.html",
-  // cssDest = "./build/assets/css",
-  // jsDest = "./build/assets/js",
   assets = "./build/assets",
   dist = "./build/dist/",
-  build = "./build";
+  build = "./build",
+  popperjs = "node_modules/popper.js/dist/popper.js",
+  jquery = "node_modules/jquery/dist/jquery.js",
+  bootstrap = "node_modules/bootstrap/dist/js/bootstrap.js";
 
 // hashing task
 gulp.task("hash", function() {
@@ -74,7 +75,7 @@ gulp.task("build-sass", () => {
 // babel build task
 gulp.task("build-js", () => {
   return gulp
-    .src(jsDir)
+    .src([jquery, popperjs, bootstrap, jsDir])
     .pipe(
       babel({
         presets: ["@babel/env"]
