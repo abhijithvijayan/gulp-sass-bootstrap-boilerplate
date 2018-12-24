@@ -1,8 +1,8 @@
 <h2 align="center">gulp-sass-bootstrap-boilerplate</h2>
 
 <p align="center">
-  <a href="https://github.com/abhijithvijayan/gulp-sass-boilerplate/blob/master/LICENSE">
-    <img alt="License" src="https://img.shields.io/github/license/abhijithvijayan/gulp-sass-boilerplate.svg"></a>
+  <a href="https://travis-ci.org/abhijithvijayan/gulp-sass-bootstrap-boilerplate">
+    <img alt="travis" src="https://travis-ci.org/abhijithvijayan/gulp-sass-bootstrap-boilerplate.svg?branch=master"></a>
   <a href="https://www.npmjs.com/package/gulp">
     <img alt="gulp" src="https://img.shields.io/badge/gulp-v4.0.0-blue.svg"></a>
   <a href="http://getbootstrap.com/">
@@ -89,7 +89,7 @@ npm install
 Launch the development environment with:
 
 ```
-gulp start
+gulp
 ```
 
 then, navigate to http://localhost:3000

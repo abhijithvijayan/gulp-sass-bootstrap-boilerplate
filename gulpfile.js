@@ -50,7 +50,7 @@ gulp.task(
 
 // inject hashed files to html
 gulp.task(
-  "hash-inject",
+  "update",
   gulp.series("clean-dist", function(done) {
     const manifest = gulp.src("./build/rev-manifest.json");
     return gulp
@@ -149,9 +149,6 @@ gulp.task(
   gulp.parallel("build-html", "build-sass", "optimise-img", "bundle-js")
 );
 
-// hashing and update links
-gulp.task("update", gulp.series("hash-inject"));
-
 // clean previous build
 gulp.task("clean", function(done) {
   del.sync([build]);
@@ -187,7 +184,7 @@ gulp.task(
 );
 
 // build and serve
-gulp.task("start", gulp.series("clean", "build-all", "update", "serve"));
+gulp.task("default", gulp.series("clean", "build-all", "update", "serve"));
 
 // build for production
 gulp.task("build", gulp.series("clean", "build-compress", "update"));
