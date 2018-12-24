@@ -1,0 +1,19 @@
+language: node_js
+cache:
+  directories:
+    - ~/.npm
+node_js:
+  - stable
+before_script:
+  - npm install --global gulp-cli
+script:
+  - gulp build
+deploy:
+  provider: pages
+  skip-cleanup: true
+  keep-history: true
+  github-token: $GITHUB_TOKEN
+  local-dir: build
+  target-branch: gh-pages
+  on:
+    branch: master
