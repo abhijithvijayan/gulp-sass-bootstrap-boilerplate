@@ -1,32 +1,7 @@
 {
-  "name": "gulp-sass-boilerplate",
-  "version": "1.0.0",
+  "name": "gulp-sass-bootstrap-boilerplate",
+  "version": "1.0.1",
   "main": "gulpfile.js",
-  "dependencies": {
-    "bootstrap": "^4.2.1",
-    "jquery": "^3.3.1",
-    "popper.js": "^1.14.6"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "browser-sync": "^2.26.3",
-    "del": "^3.0.0",
-    "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^6.0.0",
-    "gulp-babel": "^8.0.0",
-    "gulp-clean-css": "^4.0.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-rev": "^9.0.0",
-    "gulp-rev-rewrite": "^1.1.3",
-    "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.1",
-    "pump": "^3.0.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "abhijithvijayan",
   "license": "MIT",
   "description": "in the Alpha Version :)",
@@ -37,5 +12,40 @@
   "bugs": {
     "url": "https://github.com/abhijithvijayan/gulp-sass-boilerplate/issues"
   },
-  "homepage": "https://github.com/abhijithvijayan/gulp-sass-boilerplate#readme"
+  "homepage": "https://github.com/abhijithvijayan/gulp-sass-boilerplate#readme",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "browser-sync": "^2.26.3",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^5.0.3",
+    "gulp-rev": "^9.0.0",
+    "gulp-rev-rewrite": "^1.1.3",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1",
+    "pump": "^3.0.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.2.1",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gulp",
+    "sass",
+    "bootstrap",
+    "jquery",
+    "popperjs",
+    "livereload",
+    "browsersync"
+  ]
 }

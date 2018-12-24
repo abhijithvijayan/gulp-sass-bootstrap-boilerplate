@@ -131,6 +131,7 @@ gulp build
 - [x] PopperJS
 - [ ] CSS Loaders
 - [ ] Assets Loader
+- [ ] Separated location for Bundled Files
 - [ ] Zip Plugin
 - [ ] Code Optimising
 
