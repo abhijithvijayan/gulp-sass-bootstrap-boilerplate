@@ -1,15 +1,15 @@
-document.getElementById("button").addEventListener('click', () => {
-    alert("Warning");
+// js code
+document.getElementById("js-btn").addEventListener("click", () => {
+  alert("Warning");
 });
-const hello = (name) => {
-    return `hello ${name}`;
-}
-document.getElementById("btnbtn").addEventListener('click', () => {
-    alert("Alert!!!");
-});
+// es6 code
+const hello = name => {
+  return `hello ${name}`;
+};
 
-$(document).ready(function(){
-    $("h2").click(function(){
-      alert("The paragraph was clicked.");
-    });
+// jquery code
+$(document).ready(function() {
+  $("#jquery-btn").click(function() {
+    alert("The button was clicked.");
   });
+});

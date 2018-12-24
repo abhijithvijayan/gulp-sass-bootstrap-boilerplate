@@ -23,12 +23,13 @@ var sass_src = "./app/sass/*.scss",
   build = "./build",
   jquery = "node_modules/jquery/dist/jquery.min.js",
   popperjs = "node_modules/popper.js/dist/umd/popper.min.js",
-  bootstrap = "node_modules/bootstrap/dist/js/bootstrap.min.js";
+  bootstrap = "node_modules/bootstrap/dist/js/bootstrap.min.js",
+  js_dest = "./build/dist/js/";
 
 // hashing task
 gulp.task("hash", function() {
   return gulp
-    .src([dist + "bundle.js", dist + "*.css"])
+    .src([js_dest + "*.js", dist + "*.css"])
     .pipe(rev())
     .pipe(gulp.dest(assets))
     .pipe(rev.manifest())
@@ -72,7 +73,7 @@ gulp.task("build-sass", () => {
 });
 
 gulp.task("vendor-js", done => {
-  gulp
+  return gulp
     .src([jquery, popperjs, bootstrap])
     .pipe(concat("vendor-bundle.js"))
     .pipe(gulp.dest(dist));
@@ -94,11 +95,12 @@ gulp.task("build-js", () => {
 
 gulp.task(
   "bundle-js",
-  gulp.series(gulp.parallel("vendor-js", "build-js"), () => {
+  gulp.series(gulp.parallel("vendor-js", "build-js"), done => {
     return gulp
-      .src(dist + "*.js")
+      .src([dist + "vendor-bundle.js", dist + "main.js"])
       .pipe(concat("bundle.js"))
-      .pipe(gulp.dest(dist));
+      .pipe(gulp.dest(js_dest));
+    done();
   })
 );
 
@@ -106,7 +108,7 @@ gulp.task(
 gulp.task(
   "compress-js",
   gulp.series("bundle-js", function(cb) {
-    pump([gulp.src(dist + "bundle.js"), uglify(), gulp.dest(dist)], cb);
+    pump([gulp.src(js_dest + "*.js"), uglify(), gulp.dest(js_dest)], cb);
   })
 );
 
@@ -133,7 +135,7 @@ gulp.task("update", gulp.series("hash-inject"));
 
 // clean previous build
 gulp.task("clean", function(done) {
-  del.sync(["./build/**"]);
+  del.sync([build]);
   done();
 });
 
