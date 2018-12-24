@@ -9,6 +9,8 @@
     <img alt="Bootstrap" src="https://img.shields.io/badge/Bootstrap-v4.2.1-563d7c.svg"></a>
   <a href="https://www.npmjs.com/package/gulp-sass">
     <img alt="gulp-sass" src="https://img.shields.io/badge/gulp--sass-4.0.2-ff69b4.svg"></a>
+  <a href="https://jquery.com/">
+    <img alt="jQuery" src="https://img.shields.io/badge/jquery-v3.3.1-ffa200.svg"></a>
   <a href="#">
     <img alt="livereload" src="https://img.shields.io/badge/dev--server-live--reloading-red.svg"></a>
 </p>
@@ -21,11 +23,9 @@
   · Gulp
   · JQuery
   · PopperJS
-  · Live Reload
+  · Browsersync
   </em>
 </p>
-
-### in the _Beta_ Version :)
 
 ![bootstrap logo](https://user-images.githubusercontent.com/10498583/31125543-e2a88c2c-a848-11e7-87b0-d20ea38d41d0.jpg)
 ![babel logo](https://i.imgur.com/ggqfSuw.png)
@@ -43,7 +43,7 @@ It contains the following features:
 - Bootstrap v4
 - JQuery v3.3.1
 - PopperJS
-- Browser-Sync Live-Reloading
+- Browser-Sync Hot-Reloading
 - JS & CSS Compression
 - SourceMapping
 
