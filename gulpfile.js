@@ -15,15 +15,15 @@ const pump = require("pump");
 const cleanCSS = require("gulp-clean-css");
 
 // style paths
-var sassDir = "./app/sass/*.scss",
-  jsDir = "./app/*.js",
-  htmlDir = "./app/*.html",
+var sass_src = "./app/sass/*.scss",
+  js_src = "./app/*.js",
+  html_src = "./app/*.html",
   assets = "./build/assets",
   dist = "./build/dist/",
   build = "./build",
-  popperjs = "node_modules/popper.js/dist/popper.js",
-  jquery = "node_modules/jquery/dist/jquery.js",
-  bootstrap = "node_modules/bootstrap/dist/js/bootstrap.js";
+  jquery = "node_modules/jquery/dist/jquery.min.js",
+  popperjs = "node_modules/popper.js/dist/umd/popper.min.js",
+  bootstrap = "node_modules/bootstrap/dist/js/bootstrap.min.js";
 
 // hashing task
 gulp.task("hash", function() {
@@ -64,7 +64,7 @@ gulp.task(
 // Compile sass into CSS
 gulp.task("build-sass", () => {
   return gulp
-    .src(sassDir)
+    .src(sass_src)
     .pipe(sourcemaps.init())
     .pipe(autoprefixer())
     .pipe(sass())
@@ -75,10 +75,18 @@ gulp.task("build-sass", () => {
     .pipe(browserSync.stream());
 });
 
+gulp.task("vendor-js", (done) => {
+  gulp
+    .src([jquery, popperjs, bootstrap])
+    .pipe(concat("vendor-bundle.js"))
+    .pipe(gulp.dest(assets + "/vendor"));
+  done();
+});
+
 // babel build task
-gulp.task("build-js", () => {
+gulp.task("build-js", gulp.parallel("vendor-js", () => {
   return gulp
-    .src([jsDir, jquery, popperjs, bootstrap])
+    .src(js_src)
     .pipe(
       babel({
         presets: ["@babel/env"]
@@ -86,13 +94,13 @@ gulp.task("build-js", () => {
     )
     .pipe(concat("bundle.js"))
     .pipe(gulp.dest(dist));
-});
+}));
 
 // uglifyJS
 gulp.task(
   "compress-js",
   gulp.series("build-js", function(cb) {
-    pump([gulp.src(dist + "/*.js"), uglify(), gulp.dest(dist)], cb);
+    pump([gulp.src(dist + "/bundle.js"), uglify(), gulp.dest(dist)], cb);
   })
 );
 
@@ -100,7 +108,7 @@ gulp.task(
 gulp.task(
   "build-html",
   gulp.series(function(done) {
-    gulp.src(htmlDir).pipe(gulp.dest("./build"));
+    gulp.src(html_src).pipe(gulp.dest("./build"));
     done();
   })
 );
@@ -125,9 +133,9 @@ gulp.task("clean", function(done) {
 
 // watching scss/js/html files
 gulp.task("watch", function() {
-  gulp.watch(sassDir, gulp.series("live-reload"));
+  gulp.watch(sass_src, gulp.series("live-reload"));
   gulp.watch("./app/*.js", gulp.series("live-reload"));
-  gulp.watch(htmlDir).on("change", gulp.series("live-reload"));
+  gulp.watch(html_src).on("change", gulp.series("live-reload"));
 });
 
 // Static Server
