@@ -14,6 +14,7 @@ const uglify = require("gulp-uglify");
 const pump = require("pump");
 const cleanCSS = require("gulp-clean-css");
 const imagemin = require("gulp-imagemin");
+sass.compiler = require('node-sass');
 
 // style paths
 var sass_src = "./src/sass/main.scss",
@@ -68,7 +69,7 @@ gulp.task("build-sass", () => {
     .src(sass_src)
     .pipe(sourcemaps.init())
     .pipe(autoprefixer())
-    .pipe(sass())
+    .pipe(sass().on('error', sass.logError))
     .pipe(concat("style.css"))
     .pipe(sourcemaps.write())
     .pipe(cleanCSS({ compatibility: "ie8" }))

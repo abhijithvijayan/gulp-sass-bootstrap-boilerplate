@@ -8,7 +8,7 @@
   <a href="http://getbootstrap.com/">
     <img alt="Bootstrap" src="https://img.shields.io/badge/Bootstrap-v4.2.1-563d7c.svg"></a>
   <a href="https://www.npmjs.com/package/gulp-sass">
-    <img alt="gulp-sass" src="https://img.shields.io/badge/gulp--sass-4.0.2-ff69b4.svg"></a>
+    <img alt="node-sass" src="https://img.shields.io/badge/node--sass-v4.11.0-ff69b4.svg"></a>
   <a href="https://jquery.com/">
     <img alt="jQuery" src="https://img.shields.io/badge/jquery-v3.3.1-ffa200.svg"></a>
   <a href="#">
