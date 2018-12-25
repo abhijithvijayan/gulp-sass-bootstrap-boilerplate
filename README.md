@@ -39,13 +39,13 @@ It contains the following features:
 
 - Gulp Runner
 - Babel ES6 Compiler
-- SASS Compiler
 - Bootstrap v4
 - JQuery v3.3.1
 - PopperJS
+- Concatenate and minify JavaScript.
+- Compile, minify, autoprefix SASS.
 - Browser-Sync Hot-Reloading
-- JS & CSS Compression
-- SourceMapping
+- Optimize Images
 
 ## Features
 
@@ -62,45 +62,41 @@ This project contains the following loaders & plugins:
 
 ## Getting Started
 
-### Requirements
+### Dependencies
 
-- Make sure you have [NodeJS](https://nodejs.org/en/) installed, as this contains [npm](https://www.npmjs.com/), which installs dependencies for the project.
+*__Note:__ if you've previously installed Gulp globally, run `npm rm --global gulp` to remove it. [Details here.](https://medium.com/gulpjs/gulp-sips-command-line-interface-e53411d4467)*
+
+Make sure these are installed first.
+
+- [Node.js](http://nodejs.org)
+- [Gulp Command Line Utility](http://gulpjs.com)
+
+     `npm install --global gulp-cli`
 
 ### Quick Start
 
-Clone the repo:
+1. Clone the repo :
+    
+      `git clone https://github.com/abhijithvijayan/gulp-sass-boilerplate.git
+     `
+2. In bash/terminal/command line, `cd gulp-sass-boilerplate` into project directory.
+3. Run `npm install` to install required files and dependencies.
+4. Launch the `development environment` with :
 
-```
-git clone https://github.com/abhijithvijayan/gulp-sass-boilerplate.git
-```
+    `
+    gulp
+    `
 
-Navigate to the project folder
+    then, navigate to http://localhost:3000
 
-```
-cd gulp-sass-boilerplate
-```
-
-Install all packages and dependencies:
-
-```
-npm install
-```
-
-Launch the development environment with:
-
-```
-gulp
-```
-
-then, navigate to http://localhost:3000
-
-Building files can be done as follows:
+Note: **For Production, Use:**
 
 ```
 gulp build
 ```
+This will build files and assets to `build` directory.
 
-## How To Use
+## Documentation
 
 - Add your HTML files by inserting or including them in the `app` directory (By default `index.html` is added to the directory, feel free to edit it with the changes seen live.)
   - For the new `HTML` file(s), link the `styles.css` (in head tag) and `bundle.js` (in body tag) file in the `HTML` files as they are created.

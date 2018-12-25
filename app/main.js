@@ -1,6 +1,6 @@
 // js code
 document.getElementById("js-btn").addEventListener("click", () => {
-  alert("Warning");
+  alert("JS compiles!!");
 });
 // es6 code
 const hello = name => {
@@ -10,6 +10,6 @@ const hello = name => {
 // jquery code
 $(document).ready(function() {
   $("#jquery-btn").click(function() {
-    alert("The button was clicked.");
+    alert("jQuery Works.");
   });
 });

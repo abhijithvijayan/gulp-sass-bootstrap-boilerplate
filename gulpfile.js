@@ -43,7 +43,7 @@ gulp.task("hash", function() {
 gulp.task(
   "clean-dist",
   gulp.series("hash", done => {
-    del([dist]);
+    return del([dist]);
     done();
   })
 );
@@ -121,10 +121,12 @@ gulp.task(
 gulp.task("optimise-img", () => {
   return gulp
     .src(img_src + "*.+(png|jpg|jpeg|gif|svg)")
-    .pipe(imagemin({
-      // Setting interlaced to true
-      interlaced: true
-    }))
+    .pipe(
+      imagemin({
+        // Setting interlaced to true
+        interlaced: true
+      })
+    )
     .pipe(gulp.dest(img_dest));
 });
 
@@ -132,7 +134,7 @@ gulp.task("optimise-img", () => {
 gulp.task(
   "build-html",
   gulp.series(function(done) {
-    gulp.src(html_src).pipe(gulp.dest("./build"));
+   return gulp.src(html_src).pipe(gulp.dest("./build"));
     done();
   })
 );
@@ -151,15 +153,28 @@ gulp.task(
 
 // clean previous build
 gulp.task("clean", function(done) {
-  del.sync([build]);
+  return del([build]);
+  done();
+});
+
+// clean html files for update
+gulp.task("clean-html", (done) => {
+  del.sync([build + "/*.html"]);
   done();
 });
 
 // watching scss/js/html files
-gulp.task("watch", function() {
+gulp.task("watch", function(done) {
   gulp.watch(sass_src, gulp.series("live-reload"));
   gulp.watch("./app/*.js", gulp.series("live-reload"));
-  gulp.watch(html_src).on("change", gulp.series("live-reload"));
+  gulp.watch(html_src).on(
+    "change",
+    gulp.series("clean-html", "build-html", "update", done => {
+      browserSync.reload();
+      done();
+    })
+  );
+  done();
 });
 
 // Static Server
