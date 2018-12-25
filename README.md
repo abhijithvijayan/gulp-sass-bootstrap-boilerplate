@@ -98,6 +98,27 @@ This will build files and assets to `dist` directory.
 
 ## Documentation
 
+### Workflow
+
+
+```
+.
+.
+├── src
+│   ├── assets
+│   │   └── 500x300.jpg
+│   ├── sass
+│   │   ├── _fonts.scss
+│   │   ├── _variables.scss
+│   │   └── main.scss
+│   ├── index.js
+│   └── index.html
+.
+.
+```
+
+### Instructions
+
 - Add your HTML files by inserting or including them in the `src` directory (By default `index.html` is added to the directory, feel free to edit it with the changes seen live.)
   - For the new `HTML` file(s), link the `styles.css` (in head tag) and `bundle.js` (in body tag) file in the `HTML` files as they are created.
       ```
