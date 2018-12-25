@@ -16,34 +16,34 @@ const cleanCSS = require("gulp-clean-css");
 const imagemin = require("gulp-imagemin");
 
 // style paths
-var sass_src = "./app/sass/*.scss",
-  img_src = "./app/assets/**/",
-  js_src = "./app/*.js",
-  html_src = "./app/*.html",
-  assets = "./build/assets",
-  dist = "./build/dist/",
-  build = "./build",
+var sass_src = "./src/sass/*.scss",
+  img_src = "./src/assets/**/",
+  js_src = "./src/*.js",
+  html_src = "./src/*.html",
+  assets = "./dist/assets",
+  build = "./dist/build/",
+  dist = "./dist",
   jquery = "node_modules/jquery/dist/jquery.min.js",
   popperjs = "node_modules/popper.js/dist/umd/popper.min.js",
   bootstrap = "node_modules/bootstrap/dist/js/bootstrap.min.js",
-  js_dest = "./build/dist/js/",
-  img_dest = "./build/assets";
+  js_dest = "./dist/build/js/",
+  img_dest = "./dist/assets";
 
 // hashing task
 gulp.task("hash", function() {
   return gulp
-    .src([js_dest + "*.js", dist + "*.css"])
+    .src([js_dest + "*.js", build + "*.css"])
     .pipe(rev())
     .pipe(gulp.dest(assets))
     .pipe(rev.manifest())
-    .pipe(gulp.dest(build));
+    .pipe(gulp.dest(dist));
 });
 
 // cleaning dist folder
 gulp.task(
-  "clean-dist",
+  "clean-build",
   gulp.series("hash", done => {
-    return del([dist]);
+    return del([build]);
     done();
   })
 );
@@ -51,12 +51,12 @@ gulp.task(
 // inject hashed files to html
 gulp.task(
   "update",
-  gulp.series("clean-dist", function(done) {
-    const manifest = gulp.src("./build/rev-manifest.json");
+  gulp.series("clean-build", function(done) {
+    const manifest = gulp.src("./dist/rev-manifest.json");
     return gulp
-      .src("./build/*.html")
+      .src("./dist/*.html")
       .pipe(revRewrite({ manifest }))
-      .pipe(gulp.dest(build));
+      .pipe(gulp.dest(dist));
     done();
   })
 );
@@ -71,7 +71,7 @@ gulp.task("build-sass", () => {
     .pipe(concat("style.css"))
     .pipe(sourcemaps.write())
     .pipe(cleanCSS({ compatibility: "ie8" }))
-    .pipe(gulp.dest(dist))
+    .pipe(gulp.dest(build))
     .pipe(browserSync.stream());
 });
 
@@ -80,7 +80,7 @@ gulp.task("vendor-js", done => {
   return gulp
     .src([jquery, popperjs, bootstrap])
     .pipe(concat("vendor-bundle.js"))
-    .pipe(gulp.dest(dist));
+    .pipe(gulp.dest(build));
   done();
 });
 
@@ -94,7 +94,7 @@ gulp.task("build-js", () => {
       })
     )
     .pipe(concat("main.js"))
-    .pipe(gulp.dest(dist));
+    .pipe(gulp.dest(build));
 });
 
 // bundle all js
@@ -102,7 +102,7 @@ gulp.task(
   "bundle-js",
   gulp.series(gulp.parallel("vendor-js", "build-js"), done => {
     return gulp
-      .src([dist + "vendor-bundle.js", dist + "main.js"])
+      .src([build + "vendor-bundle.js", build + "main.js"])
       .pipe(concat("bundle.js"))
       .pipe(gulp.dest(js_dest));
     done();
@@ -134,7 +134,7 @@ gulp.task("optimise-img", () => {
 gulp.task(
   "build-html",
   gulp.series(function(done) {
-   return gulp.src(html_src).pipe(gulp.dest("./build"));
+   return gulp.src(html_src).pipe(gulp.dest("./dist"));
     done();
   })
 );
@@ -153,20 +153,20 @@ gulp.task(
 
 // clean previous build
 gulp.task("clean", function(done) {
-  return del([build]);
+  return del([dist]);
   done();
 });
 
 // clean html files for update
 gulp.task("clean-html", (done) => {
-  del.sync([build + "/*.html"]);
+  del.sync([dist + "/*.html"]);
   done();
 });
 
 // watching scss/js/html files
 gulp.task("watch", function(done) {
   gulp.watch(sass_src, gulp.series("live-reload"));
-  gulp.watch("./app/*.js", gulp.series("live-reload"));
+  gulp.watch("./src/*.js", gulp.series("live-reload"));
   gulp.watch(html_src).on(
     "change",
     gulp.series("clean-html", "build-html", "update", done => {
@@ -183,7 +183,7 @@ gulp.task(
   gulp.parallel("watch", () => {
     browserSync.init({
       server: {
-        baseDir: "./build/"
+        baseDir: "./dist/"
       }
     });
   })
