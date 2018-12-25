@@ -134,7 +134,7 @@ gulp.task("optimise-img", () => {
 gulp.task(
   "build-html",
   gulp.series(function(done) {
-   return gulp.src(html_src).pipe(gulp.dest("./dist"));
+    return gulp.src(html_src).pipe(gulp.dest("./dist"));
     done();
   })
 );
@@ -158,9 +158,18 @@ gulp.task("clean", function(done) {
 });
 
 // clean html files for update
-gulp.task("clean-html", (done) => {
+gulp.task("clean-html", done => {
   del.sync([dist + "/*.html"]);
   done();
+});
+
+// delete assets except js and css files
+gulp.task("delete-assets", () => {
+  return del([
+    assets + "/*.+(png|jpg|jpeg|gif|svg)",
+    "!./dist/assets/*.js",
+    "!./dist/assets/*.css"
+  ]);
 });
 
 // watching scss/js/html files
@@ -169,10 +178,17 @@ gulp.task("watch", function(done) {
   gulp.watch("./src/*.js", gulp.series("live-reload"));
   gulp.watch(html_src).on(
     "change",
-    gulp.series("clean-html", "build-html", "update", done => {
-      browserSync.reload();
-      done();
-    })
+    gulp.series(
+      "clean-html",
+      "build-html",
+      "update",
+      "delete-assets",
+      "optimise-img",
+      done => {
+        browserSync.reload();
+        done();
+      }
+    )
   );
   done();
 });

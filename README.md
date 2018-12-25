@@ -94,11 +94,11 @@ Note: **For Production, Use:**
 ```
 gulp build
 ```
-This will build files and assets to `build` directory.
+This will build files and assets to `dist` directory.
 
 ## Documentation
 
-- Add your HTML files by inserting or including them in the `app` directory (By default `index.html` is added to the directory, feel free to edit it with the changes seen live.)
+- Add your HTML files by inserting or including them in the `src` directory (By default `index.html` is added to the directory, feel free to edit it with the changes seen live.)
   - For the new `HTML` file(s), link the `styles.css` (in head tag) and `bundle.js` (in body tag) file in the `HTML` files as they are created.
       ```
       <head>
@@ -111,9 +111,9 @@ This will build files and assets to `build` directory.
       </body>
       ```
 
-- Add `images` to your `app/assets` folder.
+- Add `images` to your `src/assets` folder.
 
-- Add `sass`(SCSS) files to `app/sass` folder.
+- Add `sass`(SCSS) files to `src/sass` folder.
 
     - Make sure you import the scss file in `main.scss`
       ```
@@ -130,6 +130,8 @@ This will build files and assets to `build` directory.
 - [ ] Separated location for Bundled Files
 - [ ] Zip Plugin
 - [ ] Code Optimising
+
+N.B. The Code was put together in a few day-hours, so it's not necessarily optimised and clean.
 
 ## Licence
 
