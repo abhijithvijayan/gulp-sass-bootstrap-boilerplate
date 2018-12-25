@@ -36,7 +36,7 @@ gulp.task("hash", function() {
     .pipe(rev())
     .pipe(gulp.dest(assets))
     .pipe(rev.manifest())
-    .pipe(gulp.dest(dist));
+    .pipe(gulp.dest(assets));
 });
 
 // cleaning dist folder
@@ -52,7 +52,7 @@ gulp.task(
 gulp.task(
   "update",
   gulp.series("clean-build", function(done) {
-    const manifest = gulp.src("./dist/rev-manifest.json");
+    const manifest = gulp.src(assets + "/rev-manifest.json");
     return gulp
       .src("./dist/*.html")
       .pipe(revRewrite({ manifest }))
