@@ -16,7 +16,8 @@ const cleanCSS = require("gulp-clean-css");
 const imagemin = require("gulp-imagemin");
 
 // style paths
-var sass_src = "./src/sass/*.scss",
+var sass_src = "./src/sass/main.scss",
+  sass_files = "./src/sass/*.scss",
   img_src = "./src/assets/**/",
   js_src = "./src/*.js",
   html_src = "./src/*.html",
@@ -174,7 +175,7 @@ gulp.task("delete-assets", () => {
 
 // watching scss/js/html files
 gulp.task("watch", function(done) {
-  gulp.watch(sass_src, gulp.series("live-reload"));
+  gulp.watch(sass_files, gulp.series("live-reload"));
   gulp.watch("./src/*.js", gulp.series("live-reload"));
   gulp.watch(html_src).on(
     "change",
