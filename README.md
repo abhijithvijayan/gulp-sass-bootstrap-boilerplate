@@ -124,11 +124,11 @@ This will build files and assets to `dist` directory.
       ```
       <head>
           :
-          <link rel="stylesheet" href="assets/style.css" />
+          <link rel="stylesheet" href="css/style.css" />
       </head>
       <body>
           : 
-          <script src="assets/bundle.js"></script>
+          <script src="js/bundle.js"></script>
       </body>
       ```
 
@@ -147,8 +147,8 @@ This will build files and assets to `dist` directory.
 - [x] Jquery
 - [x] PopperJS
 - [ ] CSS Loaders
-- [ ] Assets Loader
-- [ ] Separated location for Bundled Files
+- [x] Assets Loader
+- [x] Separated location for Bundled Files
 - [ ] Zip Plugin
 - [ ] Code Optimising
 

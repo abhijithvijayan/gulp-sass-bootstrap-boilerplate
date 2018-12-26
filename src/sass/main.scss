@@ -3,6 +3,17 @@
 @import "fonts";
 @import "variables";
 
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+html {
+    height: 100%;
+}
+  
+
 body {
     color: $color-white;
     background: $color-black;

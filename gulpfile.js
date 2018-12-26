@@ -14,29 +14,31 @@ const uglify = require("gulp-uglify");
 const pump = require("pump");
 const cleanCSS = require("gulp-clean-css");
 const imagemin = require("gulp-imagemin");
-sass.compiler = require('node-sass');
+sass.compiler = require("node-sass");
 
 // style paths
 var sass_src = "./src/sass/main.scss",
   sass_files = "./src/sass/*.scss",
   img_src = "./src/assets/**/",
-  js_src = "./src/*.js",
-  html_src = "./src/*.html",
+  js_src = "./src/**/*.js",
+  html_src = "./src/**/*.html",
+  html_dest = "./dist/**/*.html",
   assets = "./dist/assets",
   build = "./dist/build/",
   dist = "./dist",
   jquery = "node_modules/jquery/dist/jquery.min.js",
   popperjs = "node_modules/popper.js/dist/umd/popper.min.js",
   bootstrap = "node_modules/bootstrap/dist/js/bootstrap.min.js",
-  js_dest = "./dist/build/js/",
-  img_dest = "./dist/assets";
+  temp = "./dist/build/temp/",
+  js_temp = "./dist/build/temp/js",
+  css_temp = "./dist/build/temp/css";
 
 // hashing task
 gulp.task("hash", function() {
   return gulp
-    .src([js_dest + "*.js", build + "*.css"])
+    .src([temp + "**/*.js", temp + "**/*.css"])
     .pipe(rev())
-    .pipe(gulp.dest(assets))
+    .pipe(gulp.dest(dist))
     .pipe(rev.manifest())
     .pipe(gulp.dest(assets));
 });
@@ -56,7 +58,7 @@ gulp.task(
   gulp.series("clean-build", function(done) {
     const manifest = gulp.src(assets + "/rev-manifest.json");
     return gulp
-      .src("./dist/*.html")
+      .src(html_dest)
       .pipe(revRewrite({ manifest }))
       .pipe(gulp.dest(dist));
     done();
@@ -69,11 +71,11 @@ gulp.task("build-sass", () => {
     .src(sass_src)
     .pipe(sourcemaps.init())
     .pipe(autoprefixer())
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass().on("error", sass.logError))
     .pipe(concat("style.css"))
     .pipe(sourcemaps.write())
     .pipe(cleanCSS({ compatibility: "ie8" }))
-    .pipe(gulp.dest(build))
+    .pipe(gulp.dest(css_temp))
     .pipe(browserSync.stream());
 });
 
@@ -106,7 +108,7 @@ gulp.task(
     return gulp
       .src([build + "vendor-bundle.js", build + "main.js"])
       .pipe(concat("bundle.js"))
-      .pipe(gulp.dest(js_dest));
+      .pipe(gulp.dest(js_temp));
     done();
   })
 );
@@ -115,7 +117,7 @@ gulp.task(
 gulp.task(
   "compress-js",
   gulp.series("bundle-js", function(cb) {
-    pump([gulp.src(js_dest + "*.js"), uglify(), gulp.dest(js_dest)], cb);
+    pump([gulp.src(temp + "**/*.js"), uglify(), gulp.dest(temp)], cb);
   })
 );
 
@@ -125,18 +127,17 @@ gulp.task("optimise-img", () => {
     .src(img_src + "*.+(png|jpg|jpeg|gif|svg)")
     .pipe(
       imagemin({
-        // Setting interlaced to true
         interlaced: true
       })
     )
-    .pipe(gulp.dest(img_dest));
+    .pipe(gulp.dest(assets));
 });
 
 // html files build
 gulp.task(
   "build-html",
   gulp.series(function(done) {
-    return gulp.src(html_src).pipe(gulp.dest("./dist"));
+    return gulp.src(html_src).pipe(gulp.dest(dist));
     done();
   })
 );
@@ -144,13 +145,13 @@ gulp.task(
 // build and minify
 gulp.task(
   "build-compress",
-  gulp.parallel("build-html", "build-sass", "optimise-img", "compress-js")
+  gulp.parallel("build-html", "build-sass", "compress-js", "optimise-img")
 );
 
 // build files
 gulp.task(
   "build-all",
-  gulp.parallel("build-html", "build-sass", "optimise-img", "bundle-js")
+  gulp.parallel("build-html", "build-sass", "bundle-js", "optimise-img")
 );
 
 // clean previous build
