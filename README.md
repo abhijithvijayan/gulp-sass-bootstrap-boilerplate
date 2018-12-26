@@ -37,7 +37,7 @@ This Gulp-Sass boilerplate starter contains the features and scripts you need to
 
 It contains the following features:
 
-- Gulp Runner
+- GulpJS
 - Babel ES6 Compiler
 - Bootstrap v4
 - JQuery v3.3.1
@@ -45,7 +45,7 @@ It contains the following features:
 - Concatenate and minify JavaScript.
 - Compile, minify, autoprefix SASS.
 - Browser-Sync Hot-Reloading
-- Optimize Images
+- Optimize and Cache Images
 
 ## Features
 
@@ -53,12 +53,16 @@ It contains the following features:
 
 This project contains the following loaders & plugins:
 
-- Gulp-Sass for compiling sass (SCSS)
-- Babel Loader for compiling ES6 code
-- Gulp-Uglify for compressing JS
-- Gulp-Clean-CSS for compressing CSS
-- Gulp-Sourcemaps for mapping into css file
-- Gulp-rev for filename hashing
+- `node-sass` for compiling sass (SCSS)
+- `gulp-babel` for compiling ES6 code
+- `Browser-sync` for hot-reloading
+- `gulp-uglify` for compressing JS
+- `gulp-clean-css` for compressing CSS
+- `gulp-sourcemaps` for mapping into css file
+- `gulp-rev` for filename hashing
+- `gulp-imagemin` for optimising images
+
+<hr />
 
 ## Getting Started
 
@@ -96,13 +100,18 @@ gulp build
 ```
 This will build files and assets to `dist` directory.
 
+<hr />
+
 ## Documentation
 
 ### Workflow
 
+`src` - > source directory
+
+`dist` -> build directory
+
 
 ```
-.
 .
 ├── src
 │   ├── assets
@@ -114,6 +123,15 @@ This will build files and assets to `dist` directory.
 │   ├── index.js
 │   └── index.html
 .
+├── dist
+│   ├── assets
+│   │   ├── 500x300.jpg
+│   │   └── rev-manifest.json
+│   ├── css
+│   │   └── style.min.css
+│   ├── js
+│   │   └── bundle.min.js
+│   └── index.html
 .
 ```
 
@@ -132,14 +150,14 @@ This will build files and assets to `dist` directory.
       </body>
       ```
 
-- Add `images` to your `src/assets` folder.
-
 - Add `sass`(SCSS) files to `src/sass` folder.
 
     - Make sure you import the scss file in `main.scss`
       ```
       @import "filename";
       ```
+
+- Add `images` to `src/assets` folder.
 
 ## TODO list
 
@@ -151,8 +169,6 @@ This will build files and assets to `dist` directory.
 - [x] Separated location for Bundled Files
 - [ ] Zip Plugin
 - [ ] Code Optimising
-
-N.B. The Code was put together in a few day-hours, so it's not necessarily optimised and clean.
 
 ## Licence
 
