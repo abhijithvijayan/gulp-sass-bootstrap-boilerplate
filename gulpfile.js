@@ -14,24 +14,25 @@ const uglify = require("gulp-uglify");
 const pump = require("pump");
 const cleanCSS = require("gulp-clean-css");
 const imagemin = require("gulp-imagemin");
+const cache = require("gulp-cache");
 sass.compiler = require("node-sass");
 
 // style paths
 var sass_src = "./src/sass/main.scss",
   sass_files = "./src/sass/*.scss",
   img_src = "./src/assets/**/",
-  js_src = "./src/**/*.js",
   html_src = "./src/**/*.html",
+  js_src = "./src/**/*.js",
+  dist = "./dist",
   html_dest = "./dist/**/*.html",
   assets = "./dist/assets",
   build = "./dist/build/",
-  dist = "./dist",
-  jquery = "node_modules/jquery/dist/jquery.min.js",
-  popperjs = "node_modules/popper.js/dist/umd/popper.min.js",
-  bootstrap = "node_modules/bootstrap/dist/js/bootstrap.min.js",
   temp = "./dist/build/temp/",
   js_temp = "./dist/build/temp/js",
-  css_temp = "./dist/build/temp/css";
+  css_temp = "./dist/build/temp/css",
+  jquery = "node_modules/jquery/dist/jquery.min.js",
+  popperjs = "node_modules/popper.js/dist/umd/popper.min.js",
+  bootstrap = "node_modules/bootstrap/dist/js/bootstrap.min.js";
 
 // hashing task
 gulp.task("hash", function() {
@@ -126,9 +127,11 @@ gulp.task("optimise-img", () => {
   return gulp
     .src(img_src + "*.+(png|jpg|jpeg|gif|svg)")
     .pipe(
-      imagemin({
-        interlaced: true
-      })
+      cache(
+        imagemin({
+          interlaced: true
+        })
+      )
     )
     .pipe(gulp.dest(assets));
 });
@@ -169,9 +172,8 @@ gulp.task("clean-html", done => {
 // delete assets except js and css files
 gulp.task("delete-assets", () => {
   return del([
-    assets + "/*.+(png|jpg|jpeg|gif|svg)",
-    "!./dist/assets/*.js",
-    "!./dist/assets/*.css"
+    assets + "/*",
+    "!./dist/assets/rev-manifest.json"
   ]);
 });
 
