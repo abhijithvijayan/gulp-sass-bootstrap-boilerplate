@@ -108,7 +108,9 @@ gulp.task(
   gulp.series(gulp.parallel("vendor-js", "build-js"), done => {
     return gulp
       .src([build + "vendor-bundle.js", build + "main.js"])
+      .pipe(sourcemaps.init())
       .pipe(concat("bundle.js"))
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest(js_temp));
     done();
   })
@@ -171,10 +173,7 @@ gulp.task("clean-html", done => {
 
 // delete assets except js and css files
 gulp.task("delete-assets", () => {
-  return del([
-    assets + "/*",
-    "!./dist/assets/rev-manifest.json"
-  ]);
+  return del([assets + "/*", "!./dist/assets/rev-manifest.json"]);
 });
 
 // watching scss/js/html files
