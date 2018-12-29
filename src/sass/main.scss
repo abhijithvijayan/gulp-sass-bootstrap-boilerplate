@@ -12,10 +12,26 @@ html, body {
 html {
     height: 100%;
 }
-  
 
 body {
     color: $color-white;
     background: $color-black;
     font-family: $font-family-montserrat;
+}
+
+#home {
+    #carouselExampleIndicators {
+        img {
+            height: 32em;
+            object-fit: cover;
+        }
+    }
+}
+
+#work {
+    color: $color-black;
+}
+
+section {
+    padding-bottom: 120px;
 }

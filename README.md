@@ -104,7 +104,7 @@ This will build files and assets to `dist` directory.
 
 ## Documentation
 
-### Workflow
+### Workflow structure
 
 `src` - > source directory
 
@@ -115,6 +115,9 @@ This will build files and assets to `dist` directory.
 .
 ├── src
 │   ├── assets
+│   │   ├── first.jpeg
+│   │   ├── second.jpg
+│   │   ├── third.jpeg
 │   │   └── 500x300.jpg
 │   ├── sass
 │   │   ├── _fonts.scss
@@ -123,8 +126,12 @@ This will build files and assets to `dist` directory.
 │   ├── index.js
 │   └── index.html
 .
+.
 ├── dist
 │   ├── assets
+│   │   ├── first.jpeg
+│   │   ├── second.jpg
+│   │   ├── third.jpeg
 │   │   ├── 500x300.jpg
 │   │   └── rev-manifest.json
 │   ├── css
