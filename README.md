@@ -115,9 +115,6 @@ This will build files and assets to `dist` directory.
 .
 ├── src
 │   ├── assets
-│   │   ├── first.jpeg
-│   │   ├── second.jpg
-│   │   ├── third.jpeg
 │   │   └── 500x300.jpg
 │   ├── sass
 │   │   ├── _fonts.scss
@@ -129,9 +126,6 @@ This will build files and assets to `dist` directory.
 .
 ├── dist
 │   ├── assets
-│   │   ├── first.jpeg
-│   │   ├── second.jpg
-│   │   ├── third.jpeg
 │   │   ├── 500x300.jpg
 │   │   └── rev-manifest.json
 │   ├── css
