@@ -160,16 +160,6 @@ This will build files and assets to `dist` directory.
 
 - Add `images` to `src/assets` folder.
 
-## TODO list
-
-- [x] Bootstrap inclusion
-- [x] Jquery
-- [x] PopperJS
-- [ ] CSS Loaders
-- [x] Assets Loader
-- [x] Separated location for Bundled Files
-- [ ] Zip Plugin
-- [ ] Code Optimising
 
 ## Licence
 
